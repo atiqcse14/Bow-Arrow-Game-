@@ -1,0 +1,786 @@
+# include "iGraphics.h"
+#include <math.h>
+#include <time.h>
+#include <string.h>
+
+double flag, flag2 = 0, ballon1sp = 0,flagins = 0,flaghigh = 0, ballon2sp = 0, specialsp = 0, ballon3sp = 0, ballon4sp = 0, co_of_arrowx, co_of_arrowy, flagofl1 = 0, levelchange = 0;
+double arx = 50, ary = 30;
+double px = 4, py = 0, pdy = 10, pdx, called_highscore = 0;
+int arw1 = 0, ballonst = 0, next_arrow = 0, angle = 0, change_angle = 0, score = 0, suddenx, suddeny, arrowcount = 0, game_over = 0;
+int arrow_shut = px, i, arrow_ctr = py, k;
+char scorestr[3 + 1], arw1str[2 + 1], arrowremaining[2 + 1], anglestr[2 + 1];
+char name1[100], hscorestr[3+1], fullscore[100];
+FILE *fp1, *fp2;
+
+int i1, j, n, score2[11], score3[11];
+char name[11][150], temp[150], str3[15], name3[11][150];
+
+
+
+char str[100], str2[100];
+int len;
+int mode;
+
+void high_score();
+void drawTextBox()
+{
+	iSetColor(150, 150, 150);
+	iRectangle(530, 200, 250, 30);
+}
+
+
+
+void Ballon1()
+{
+	iShowBMP2(1100, ballon1sp, "lvl2b1.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 1000 && arrow_shut <= 1000 + 40) && (co_of_arrowy >= ballon1sp && co_of_arrowy <= ballon1sp + 65)){
+		iShowBMP2(1100, ballon1sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 25; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon1sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon1sp = ballon1sp + rand() % 20;
+	if (ballon1sp >= 680){
+		ballon1sp = -rand() % 1000;
+	}
+	if (ballon1sp >= 680){
+		ballon1sp = 0;
+	}
+	iShowBMP2(950, ballon2sp, "lvl2b2.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 850 && co_of_arrowx <= 850 + 40) && (co_of_arrowy >= ballon2sp && co_of_arrowy <= ballon2sp + 65)){
+		iShowBMP2(950, ballon2sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 10; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon2sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon2sp = ballon2sp + 15;
+	if (ballon2sp >= 680){
+		ballon2sp = 0;
+	}
+	iShowBMP2(1200, ballon3sp, "lvl2b3.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 1100 && co_of_arrowx <= 1100 + 40) && (co_of_arrowy >= ballon3sp && co_of_arrowy <= ballon3sp + 65)){
+		iShowBMP2(1200, ballon3sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 10; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon3sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon3sp = ballon3sp + 12;
+	if (ballon3sp >= 680){
+		ballon3sp = 0;
+	}
+	//suddenx = 800+rand()%10 - rand()%20;
+	specialsp = specialsp + 10;
+
+	iShowBMP2(800, specialsp, "lvl2b4.BMP", 255 * 65536 + 255 * 256 + 255);   //special ballon here
+	if ((co_of_arrowx >= (800 - 100) && co_of_arrowx <= (800 - 100 + 40)) && (co_of_arrowy >= specialsp && co_of_arrowy <= specialsp + 65)){
+		iShowBMP2(800, specialsp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 10; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		specialsp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	if (specialsp >= 680){
+		specialsp = 0;
+	}
+}
+void ballon2()
+{
+	iShowBMP2(1100, ballon1sp, "lvl2b1.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 1000 && arrow_shut <= 1000 + 40) && (co_of_arrowy >= ballon1sp && co_of_arrowy <= ballon1sp + 65)){
+		iShowBMP2(1100, ballon1sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 20; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon1sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon1sp = ballon1sp + 10;
+	if (ballon1sp >= 680){
+		ballon1sp = 0;
+	}
+	iShowBMP2(950, ballon2sp, "lvl2b2.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 850 && co_of_arrowx <= 850 + 40) && (co_of_arrowy >= ballon2sp && co_of_arrowy <= ballon2sp + 65)){
+		iShowBMP2(950, ballon2sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 20; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon2sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon2sp = ballon2sp + 12;
+	if (ballon2sp >= 680){
+		ballon2sp = 0;
+	}
+	iShowBMP2(1200, ballon3sp, "lvl2b3.BMP", 255 * 65536 + 255 * 256 + 255);
+	if ((co_of_arrowx >= 1100 && co_of_arrowx <= 1100 + 40) && (co_of_arrowy >= ballon3sp && co_of_arrowy <= ballon3sp + 65)){
+		iShowBMP2(1200, ballon3sp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 20; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		ballon3sp = -65;
+		co_of_arrowx = -500;
+		co_of_arrowy = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	ballon3sp = ballon3sp + 15;
+	if (ballon3sp >= 680){
+		ballon3sp = 0;
+	}
+	iShowBMP2(800, specialsp, "lvl2b4.BMP", 255 * 65536 + 255 * 256 + 255);   //special ballon here
+	if ((co_of_arrowx >= (800 - 100) && co_of_arrowx <= (800 - 100 + 40)) && (co_of_arrowy >= specialsp && co_of_arrowy <= specialsp + 65)){
+		iShowBMP2(800, specialsp, "boom.BMP", 255 * 65536 + 255 * 256 + 255); score = score + 10; arw1++;
+		arrow_shut = px;
+		flag2 = 0;
+		specialsp = -65;
+		co_of_arrowy = -500;
+		co_of_arrowx = -500;
+		next_arrow = 0;
+		change_angle = 0;
+	}
+	if (specialsp >= 680){
+		specialsp = 0;
+	}
+	specialsp = specialsp + rand()%25;
+}
+void Arrow1(){
+	arrow_shut = arrow_shut + 30;
+	if (angle == 0){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60, "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60;
+
+	}
+	if (angle == 10){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.176*(arrow_shut + 30) - 0.000141*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.176*(arrow_shut + 30) - 0.000141*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 20){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.36397*(arrow_shut + 30) - 0.000291176*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.36397*(arrow_shut + 30) - 0.000291176*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 30){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.58*(arrow_shut + 30) - 0.000553*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.58*(arrow_shut + 30) - 0.000553*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 40){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.839*(arrow_shut + 30) - 0.0006712*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.839*(arrow_shut + 30) - 0.0006712*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 50){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 1.19175*(arrow_shut + 30) - 0.0009534*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 1.19175*(arrow_shut + 30) - 0.0009534*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+}
+void Arrow2(){
+	arrow_shut = arrow_shut + 33;
+	if (angle == 0){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60, "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60;
+
+	}
+	if (angle == 10){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.176*(arrow_shut + 30) - 0.000141*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.176*(arrow_shut + 30) - 0.000141*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 20){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.36397*(arrow_shut + 30) - 0.000291176*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.36397*(arrow_shut + 30) - 0.000291176*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 30){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.58*(arrow_shut + 30) - 0.000553*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.58*(arrow_shut + 30) - 0.000553*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 40){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 0.839*(arrow_shut + 30) - 0.0006712*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 0.839*(arrow_shut + 30) - 0.0006712*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+	if (angle == 50){
+		iShowBMP2(arrow_shut + 30, arrow_ctr + 60 + 1.19175*(arrow_shut + 30) - 0.0009534*(arrow_shut + 30)*(arrow_shut + 30), "arl2.BMP", 255 * 65536 + 255 * 256 + 255);
+		co_of_arrowx = arrow_shut + 30;
+		co_of_arrowy = arrow_ctr + 60 + 1.19175*(arrow_shut + 30) - 0.0009534*(arrow_shut + 30)*(arrow_shut + 30);
+	}
+}
+void Archer(){
+
+}
+void Level1(){
+	iShowBMP(0, 0, "level1real.bmp");
+	if (ballonst == 1){
+		Ballon1();
+	}
+	iText(100, 600, "SCORE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	scorestr[0] = (char)(score / 100 + 48);
+	scorestr[1] = (char)((score % 100) / 10 + 48);
+	scorestr[2] = (char)(score % 10 + 48);
+	iText(200, 600, &scorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(100, 580, "ARROW'S USED:", GLUT_BITMAP_TIMES_ROMAN_24);
+	arw1str[0] = (char)(arw1 / 10 + 48);
+	arw1str[1] = (char)(arw1 % 10 + 48);
+	iText(290, 580, &arw1str[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(770, 580, "ARROW'S REMAINING: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	arrowremaining[0] = (char)((15 - arw1) / 10 + 48);
+	arrowremaining[1] = (char)((15 - arw1) % 10 + 48);
+	iText(1040, 580, &arrowremaining[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(770, 600, "ANGLE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	anglestr[0] = (char)(angle / 10 + 48);
+	anglestr[1] = (char)(angle % 10 + 48);
+	iText(880, 600, &anglestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iSetColor(0, 102, 0);
+	iFilledRectangle(px, py, 100, 15);
+	if (angle == 0){
+		iShowBMP2(px, py + 12, "ar1.00.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 10){
+		iShowBMP2(px, py + 12, "ar1.10.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 20){
+		iShowBMP2(px, py + 12, "ar1.20.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 30){
+		iShowBMP2(px, py + 12, "ar1.30.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 40){
+		iShowBMP2(px, py + 12, "ar1.40.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 50){
+		iShowBMP2(px, py + 12, "ar1.50.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+}
+void level2()
+{
+	iShowBMP(0, 0, "level2real.BMP");
+	iText(100, 600, "SCORE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	ballon2();
+	scorestr[0] = (char)(score / 100 + 48);
+	scorestr[1] = (char)((score % 100) / 10 + 48);
+	scorestr[2] = (char)(score % 10 + 48);
+	iText(200, 600, &scorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(100, 580, "ARROW'S USED:", GLUT_BITMAP_TIMES_ROMAN_24);
+	arw1str[0] = (char)(arw1 / 10 + 48);
+	arw1str[1] = (char)(arw1 % 10 + 48);
+	iText(290, 580, &arw1str[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(770, 580, "ARROW'S REMAINING: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	arrowremaining[0] = (char)((15 - arw1) / 10 + 48);
+	arrowremaining[1] = (char)((15 - arw1) % 10 + 48);
+	iText(1040, 580, &arrowremaining[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iText(770, 600, "ANGLE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	anglestr[0] = (char)(angle / 10 + 48);
+	anglestr[1] = (char)(angle % 10 + 48);
+	iText(880, 600, &anglestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+	iSetColor(0, 102, 0);
+	iFilledRectangle(px, py, 100, 15);
+	if (angle == 0){
+		iShowBMP2(px, py + 12, "ar1.00.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 10){
+		iShowBMP2(px, py + 12, "ar1.10.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 20){
+		iShowBMP2(px, py + 12, "ar1.20.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 30){
+		iShowBMP2(px, py + 12, "ar1.30.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 40){
+		iShowBMP2(px, py + 12, "ar1.40.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+	if (angle == 50){
+		iShowBMP2(px, py + 12, "ar1.50.bmp", 255 * 65536 + 255 * 256 + 255);
+	}
+}
+/*void highscore()
+{
+	fp2 = fopen("Name_List.txt", "a+");
+	fprintf(fp2, "%s\t%d", str, &score); // scan player name & score here...
+
+	for(i1 =0; i1<11; i1++){
+	fscanf(fp2, "%s\t%d", name[i1], &score2[i1]);
+	}
+	fclose(fp2);
+	//sorting score...
+	fp2 = fopen("Name_List.txt", "r");
+	for(i1=0; i1<10; i1++){
+	   for(j=i1+1; j<11; j++){
+	     if(score2[i1]<score2[j]){
+	           n = score2[i1];
+	           score2[i1] = score2[j];
+	           score2[j] = n;
+	           strcpy(temp, name[i1]);
+	           strcpy(name[i1], name[j]);
+	           strcpy(name[j], temp);
+	              }
+	       }
+	}
+	//printing sorted list...(optional)
+	for(i1=0; i1<10; i1++){
+	printf("%s\t%d\n", name[i1], score2[i1]);
+	}
+	//inserting sorted list in file...
+	fclose(fp2);
+	fp2 = fopen("Name_List.txt", "w");
+	for(i1=0; i1<10; i1++){
+	fprintf(fp2, "%s  \t  %d\n", name[i1], score2[i1]);
+	}
+	fclose(fp2);
+}*/
+void scoreshow()
+
+{
+	 fp2 = fopen("Name_List.txt", "r");
+    for(i1=0; i1<11; i1++){
+        fscanf(fp2,"%s %d\n", name3[i1], &score3[i1]);
+    }
+	iSetColor(0, 0, 10);
+		sprintf(str3, "1.    %s", name3[0]);
+	 iText(200,500, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[0]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[0]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[0] % 10 + 48);
+	   iText(450,500, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+	   sprintf(str3, "2.    %s", name3[1]);
+	 iText(200,460, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[1]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[1]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[1] % 10 + 48);
+	   iText(450,460, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   
+
+
+	   sprintf(str3, "3.    %s", name3[2]);
+	 iText(200,420, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[2]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[2]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[2] % 10 + 48);
+	   iText(450,420, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "4.    %s", name3[3]);
+	 iText(200,380, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[3]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[3]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[3] % 10 + 48);
+	   iText(450,380, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "5.    %s", name3[4]);
+	 iText(200,340, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[4]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[4]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[4] % 10 + 48);
+	   iText(450,340, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "6.    %s", name3[5]);
+	 iText(200,300, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[5]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[5]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[5] % 10 + 48);
+	   iText(450,300, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "7.    %s", name3[6]);
+	 iText(200,260, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[6]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[6]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[6] % 10 + 48);
+	   iText(450,260, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "8.    %s", name3[7]);
+	 iText(200,220, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[7]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[7]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[7] % 10 + 48);
+	   iText(450,220, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+	   sprintf(str3, "9.    %s", name3[8]);
+	 iText(200,180, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[8]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[8]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[8] % 10 + 48);
+	   iText(450,180, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+
+
+	   sprintf(str3, "10.   %s", name3[9]);
+	 iText(200,140, str3, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   hscorestr[0] = (char)(score3[9]/ 100 + 48);
+	   hscorestr[1] = (char)((score3[9]% 100) / 10 + 48);
+	   hscorestr[2] = (char)(score3[9] % 10 + 48);
+	   iText(450,140, &hscorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+	   iText(300, 80, "Press 'a' to start the game", GLUT_BITMAP_TIMES_ROMAN_24);
+	   fclose(fp2);
+}
+
+
+void iDraw()
+{
+	iClear();
+	iSetColor(255, 255, 255);
+	iShowBMP(0, 0, "start.BMP");
+	if (flagins == 1){
+		iShowBMP(0, 0, "ins.BMP");
+	}
+	iSetColor(255, 255, 255);
+	if(flaghigh == 1){
+		iShowBMP(0, 0, "highpage.BMP");
+		scoreshow();
+	}
+	iSetColor(255, 255, 255);
+	if (flagofl1 == 1){
+		iShowBMP(0, 0, "fpl1.BMP");
+	}
+	iSetColor(255, 255, 255);
+	
+	if (flag == 1){
+		if (score< 80 && arw1 != 15){
+			Level1();
+			if (flag2 == 2 && arw1 < 16){
+				Arrow1();
+				if (co_of_arrowx > 1250){
+					arw1++;
+					flag2 = 0;
+					next_arrow = 0;
+					change_angle = 0;
+				}
+				if (co_of_arrowx >= 50 && co_of_arrowx <= 1250){
+					change_angle = 1;
+				}
+				if (co_of_arrowx<50){
+					change_angle = 0;
+				}
+			}
+		}
+		else if (score >= 80 && arw1 != 15) {
+			iShowBMP(0, 0, "lvl2st.BMP");
+			if (levelchange == 1){
+				level2();
+				if (flag2 == 2 && arw1 < 16){
+					Arrow2();
+					if (co_of_arrowx > 1250){
+						arw1++;
+						flag2 = 0;
+						next_arrow = 0;
+						change_angle = 0;
+					}
+					if (co_of_arrowx >= 50 && co_of_arrowx <= 1250){
+						change_angle = 1;
+					}
+					if (co_of_arrowx<50){
+						change_angle = 0;
+					}
+				}
+			}
+
+		}
+		else if (score<150 && arw1 >= 15) {
+			iShowBMP(0, 0, "lost.BMP");
+
+			drawTextBox();
+			if (mode == 1)
+			{
+				iSetColor(0, 0, 0);
+				iText(535, 205, str);
+			}
+
+			iText(535, 175, "Please enter your name in capital form: ", GLUT_BITMAP_TIMES_ROMAN_24);
+			
+
+			iText(560, 240, "YOUR SCORE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	      scorestr[0] = (char)(score / 100 + 48);
+	      scorestr[1] = (char)((score % 100) / 10 + 48);
+	      scorestr[2] = (char)(score % 10 + 48);
+	      iText(730, 240, &scorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+		  fp2 = fopen("Name_List.txt", "r");
+		  fscanf(fp2,"%s %d\n", name3[0], &score3[0]);
+		  sprintf(fullscore, "Previous best score was %d by the legendary %s",score3[0], name3[0]);
+		  iText(470, 120, fullscore, GLUT_BITMAP_TIMES_ROMAN_24);
+		  fclose(fp2);
+
+		  if(called_highscore==0){
+			  high_score();
+			  called_highscore=1;
+		  }
+		}
+		else{
+			iShowBMP(0, 0, "youwon.BMP");
+			drawTextBox();
+			if (mode == 1)
+			{
+				iSetColor(255, 255, 255);
+				iText(535, 205, str);
+			}
+			//highscore();
+			
+			
+			iText(460, 175, "Please enter your name in capital form: ", GLUT_BITMAP_TIMES_ROMAN_24);
+			//score show here
+			iSetColor(0, 0, 0);
+			
+		 iText(535, 140, "YOUR SCORE: ", GLUT_BITMAP_TIMES_ROMAN_24);
+	      scorestr[0] = (char)(score / 100 + 48);
+	      scorestr[1] = (char)((score % 100) / 10 + 48);
+	      scorestr[2] = (char)(score % 10 + 48);
+	      iText(705, 140, &scorestr[0], GLUT_BITMAP_TIMES_ROMAN_24);
+
+
+		   fp2 = fopen("Name_List.txt", "r");
+		  fscanf(fp2,"%s %d\n", name3[0], &score3[0]);
+		  sprintf(fullscore, "Previous best score was %d by the legendary %s",score3[0], name3[0]);
+		  iText(410, 120, fullscore, GLUT_BITMAP_TIMES_ROMAN_24);
+		  fclose(fp2);
+
+
+		  if(called_highscore==0){
+			  high_score();
+			  called_highscore=1;
+		  }
+		}
+
+	}
+}
+
+
+void iMouseMove(int mx, int my)
+{
+
+}
+
+
+void iMouse(int button, int state, int mx, int my)
+{
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		//place your codes here	
+		if (mx >= 530 && mx <= 780 && my >= 200 && my <= 230 && mode == 0)
+		{
+			mode = 1;
+		}
+	}
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		//place your codes here	
+	}
+}
+
+
+void iKeyboard(unsigned char key)
+{
+	if (key == 'u')
+	{
+		if (py <= 558){
+			py += 10;
+		}
+	}
+	if (key == 'v'){
+		levelchange = 1;
+	}
+	if (key == 'j')
+	{
+		if (py >= 0){
+			py -= 10;
+		}
+	}
+	if (key == 's' && next_arrow == 0){
+		flag2 = 2;
+		arrow_shut = px;
+		arrow_ctr = py;
+		next_arrow = 1;
+	}
+	if (key == 'a'){
+		flagofl1 = 1;
+	}
+	if (key == 'c'){
+		flag = 1;
+		flagofl1 = 0;
+		ballonst = 1;
+	}
+	if (key == '0' && change_angle == 0){
+		angle = 0;
+		change_angle = 1;
+	}
+	if (key == '1' && change_angle == 0){
+		angle = 10;
+		change_angle = 1;
+	}
+	if (key == '2' && change_angle == 0){
+		angle = 20;
+		change_angle = 1;
+	}
+	if (key == '3'&& change_angle == 0){
+		angle = 30;
+		change_angle = 1;
+	}
+	if (key == '4'&& change_angle == 0){
+		angle = 40;
+		change_angle = 1;
+	}
+	if (key == '5'&& change_angle == 0){
+		angle = 50;
+		change_angle = 1;
+	}
+	if (key == 'r'){
+		arw1 = 0;
+		score = 0;
+		flag2 = 0;
+		next_arrow = 0;
+		called_highscore=0;
+	}
+	if (key == 'i'){
+		flagins = 1;
+	}
+	if (key == 'h'){
+		flaghigh = 1;
+	}
+	if(key == 'k'){
+		iText(500, 300, "game saved now", GLUT_BITMAP_TIMES_ROMAN_24);
+		fp1 = fopen("save.txt", "w+");
+		fprintf(fp1, "%d %d %d %d",arw1, score, flag2, next_arrow);
+		fclose(fp1);
+	}
+	if(key == 'l'){
+		called_highscore = 0;
+		fp1 = fopen("save.txt", "r");
+		fscanf(fp1, "%d %d %d %d",&arw1,  &score,&flag2, &next_arrow );
+		fclose(fp1);
+	}
+
+	int i;
+	if (mode == 1)
+	{
+		if (key == '\r')
+		{
+			mode = 0;
+			strcpy(str2, str);
+			//printf("%s\n",str2);
+			strcpy(name[10], str);
+			fp2 = fopen("Name_List.txt", "a");
+			fprintf(fp2, "%s %d", name[10], score);
+			fclose(fp2);
+			printf("%s\n",name[10]);
+			//for (i = 0; i < len; i++)
+			//	str[i] = 0;
+			len = 0;
+			high_score();
+		}
+		else
+		{
+			str[len] = key;
+			len++;
+		}
+	}
+}
+void high_score()
+{
+	//scanf("%s %d", name[10], &score[10]); // scan player name & score here...
+    fp2 = fopen("Name_List.txt", "r");
+    for(i1=0; i1<11; i1++){
+        fscanf(fp2,"%s %d\n", name[i1], &score2[i1]);
+    }
+    fclose(fp2);
+	//strcpy(name[10],str2);
+	//score2[10] = score;
+	//printf("\n%d %s\n",score, name[10]);
+    //sorting score...
+   for(i1=0; i1<11; i1++){
+        for(j=i1+1; j<11; j++){
+            if(score2[i1]<score2[j]){
+                strcpy(temp, name[i1]);
+                strcpy(name[i1], name[j]);
+                strcpy(name[j], temp);
+				n = score2[i1];
+                score2[i1] = score2[j];
+                score2[j] = n;
+            }
+        }
+   }
+   //printing sorted list...(optional)
+   //for(i1=0; i1<10; i1++){
+    //    printf("%s\t%d\n", name[i1], score2[i1]);
+    //}
+    //inserting sorted list in file...
+   fp2 = fopen("Name_List.txt", "w");
+   for(i1=0; i1<10; i1++){
+        fprintf(fp2,"%s %d\n", name[i1],score2[i1]);
+    }
+    fclose(fp2);
+}
+
+
+
+
+void iSpecialKeyboard(unsigned char key)
+{
+
+	if (key == GLUT_KEY_END)
+	{
+		exit(0);
+	}
+}
+
+int main()
+
+{
+	len = 0;
+	mode = 0;
+	str[0] = 0;
+	iInitialize(1250, 680, "Bow and Arrow's");
+}
